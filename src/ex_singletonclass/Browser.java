@@ -1,12 +1,18 @@
 package ex_singletonclass;
 
-public class Browser {
+import java.io.Serializable;
+
+public class Browser implements Cloneable, Serializable {
 
     // create private variable of class name
-    private static Browser browser;
+    private volatile static Browser browser;
 
     // create private constructor
-    private Browser(){}
+    private Browser(){
+        if(browser!=null){
+            throw new IllegalArgumentException("Object already exists");
+        }
+    }
 
     // create getter of object creation
     public static Browser getInstance(){
@@ -28,5 +34,13 @@ public class Browser {
 
     public void display(){
         System.out.println("display info");
+    }
+    @Override
+    public Object clone(){
+        throw new IllegalArgumentException("Not able to clone");
+    }
+
+    Object readResolve(){
+        return getInstance();
     }
 }
